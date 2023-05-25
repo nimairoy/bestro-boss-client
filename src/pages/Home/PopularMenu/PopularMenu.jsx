@@ -15,7 +15,7 @@ const PopularMenu = () => {
     }, [])
 
     return (
-        <section>
+        <section className='mb-12'>
             <SectionTitle
                 subHeading={'Popular Items'}
                 heading={'From our menu'}
