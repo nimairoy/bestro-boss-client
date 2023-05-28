@@ -1,18 +1,53 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { Link } from 'react-router-dom';
 import logo from '../../../assets/bistro.png'
 import { Helmet } from 'react-helmet-async';
+import { AuthContext } from '../../../provider/AuthProvider';
+import Swal from 'sweetalert2';
 
 const Header = () => {
+
+    const { user, logout } = useContext(AuthContext);
+
+    const handleLogOut = () => {
+        logout()
+        .then(result => {
+            Swal.fire({
+                title: 'Log out Successfully',
+                showClass: {
+                  popup: 'animate__animated animate__fadeInDown'
+                },
+                hideClass: {
+                  popup: 'animate__animated animate__fadeOutUp'
+                }
+              })
+        })
+        .catch(error => {
+            console.log(error.message)
+        })
+    }
 
     const navInfo = <>
         <li><Link to='/'>Home</Link></li>
         <li><Link to='/menu'>Our Menu</Link></li>
         <li><Link to='/order/salads'>Order Food</Link></li>
+        {
+            user
+                ?
+                <>
+                   <li> <img className='w-20' src={user?.photoURL} alt="" /> </li>
+                   <li> <button onClick={handleLogOut} className='btn btn-primary'>LogOut</button></li>
+                </>
+                :
+                <>
+                    <li><Link to='/login'>Login</Link></li>
+                    <li><Link to='/signup'>Sign up</Link></li>
+                </>
+        }
     </>
 
     return (
-        
+
         <div style={{ background: 'rgba(21, 21, 21, 0.5)' }} className="navbar fixed z-10 max-w-screen-xl text-white">
             <Helmet>
                 <title>Bestro Boss Restaurant | Order </title>
@@ -29,7 +64,7 @@ const Header = () => {
                 <Link to='/' className="p-2"><img className='w-44' src={logo} alt="" /></Link>
             </div>
             <div className="navbar-end hidden lg:flex">
-                <ul className="menu menu-horizontal px-1">
+                <ul className="menu menu-horizontal items-center px-1">
                     {navInfo}
                 </ul>
             </div>
