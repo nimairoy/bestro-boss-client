@@ -6,6 +6,7 @@ import { Helmet } from 'react-helmet-async';
 import { useContext } from 'react';
 import { AuthContext } from '../../provider/AuthProvider';
 import Swal from 'sweetalert2';
+import SocialLogin from '../../components/SocialLogin/SocialLogin';
 
 const SignUp = () => {
     const { register, handleSubmit, reset, formState: { errors } } = useForm();
@@ -16,21 +17,33 @@ const SignUp = () => {
         createUser(data.email, data.password)
             .then(result => {
                 const loggedUser = result.user;
-                console.log(loggedUser)
+                // console.log(loggedUser)
 
                 updateUserProfile(data.name, data.photo)
-                    .then(result => {
-                        console.log(result.user)
-
-                        Swal.fire({
-                            title: 'User Created Successfully',
-                            showClass: {
-                                popup: 'animate__animated animate__fadeInDown'
+                    .then(() => {
+                        const savedUser = { name: data.name, email: data.email }
+                        fetch('http://localhost:5000/users', {
+                            method: 'POST',
+                            headers: {
+                                'content-type': 'application/json'
                             },
-                            hideClass: {
-                                popup: 'animate__animated animate__fadeOutUp'
-                            }
+                            body: JSON.stringify(savedUser)
                         })
+                            .then(res => res.json())
+                            .then(data => {
+                                if (data.insertedId) {
+                                    Swal.fire({
+                                        title: 'User Created Successfully',
+                                        showClass: {
+                                            popup: 'animate__animated animate__fadeInDown'
+                                        },
+                                        hideClass: {
+                                            popup: 'animate__animated animate__fadeOutUp'
+                                        }
+                                    })
+                                }
+                            })
+
                     })
                     .catch(error => console.log(error.message))
 
@@ -97,6 +110,7 @@ const SignUp = () => {
                             </div>
                         </form>
                         <p className='text-center pb-5'>Already have an account? <Link className='text-primary underline font-bold' to='/login'>Login</Link></p>
+                        <SocialLogin></SocialLogin>
                     </div>
                 </div>
             </div>

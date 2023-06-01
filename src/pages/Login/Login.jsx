@@ -5,6 +5,7 @@ import { AuthContext } from '../../provider/AuthProvider';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
 import Swal from 'sweetalert2';
+import SocialLogin from '../../components/SocialLogin/SocialLogin';
 
 const Login = () => {
 
@@ -46,6 +47,7 @@ const Login = () => {
                 console.log(error.message)
             })
     }
+
 
     const handleValidateCaptcha = (e) => {
         const captchaValue = e.target.value;
@@ -92,10 +94,11 @@ const Login = () => {
                                 </label>
                             </div>
                             <div className="form-control mt-6">
-                                <input disabled={disabled} className="btn btn-primary" type="submit" value="Login" />
+                                <input disabled={false} className="btn btn-primary" type="submit" value="Login" />
                             </div>
                         </form>
                         <p className='text-center pb-5'>If You are New Please <Link className='text-primary underline font-bold' to='/signup'>Sign up</Link></p>
+                        <SocialLogin></SocialLogin>
                     </div>
                 </div>
             </div>

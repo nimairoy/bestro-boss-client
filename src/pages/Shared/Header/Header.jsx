@@ -4,39 +4,52 @@ import logo from '../../../assets/bistro.png'
 import { Helmet } from 'react-helmet-async';
 import { AuthContext } from '../../../provider/AuthProvider';
 import Swal from 'sweetalert2';
+import { AiOutlineShoppingCart } from 'react-icons/ai'
+import useCart from '../../../hooks/useCart';
 
 const Header = () => {
+
+    const [cart] = useCart();
 
     const { user, logout } = useContext(AuthContext);
 
     const handleLogOut = () => {
         logout()
-        .then(result => {
-            Swal.fire({
-                title: 'Log out Successfully',
-                showClass: {
-                  popup: 'animate__animated animate__fadeInDown'
-                },
-                hideClass: {
-                  popup: 'animate__animated animate__fadeOutUp'
-                }
-              })
-        })
-        .catch(error => {
-            console.log(error.message)
-        })
+            .then(result => {
+                Swal.fire({
+                    title: 'Log out Successfully',
+                    showClass: {
+                        popup: 'animate__animated animate__fadeInDown'
+                    },
+                    hideClass: {
+                        popup: 'animate__animated animate__fadeOutUp'
+                    }
+                })
+            })
+            .catch(error => {
+                console.log(error.message)
+            })
     }
 
     const navInfo = <>
         <li><Link to='/'>Home</Link></li>
         <li><Link to='/menu'>Our Menu</Link></li>
         <li><Link to='/order/salads'>Order Food</Link></li>
+        <li><Link to='/secret'>Protected</Link></li>
+        <li>
+            <Link to='/dashboard/mycart'>
+                <span className="btn gap-2">
+                    <AiOutlineShoppingCart className='text-2xl' />
+                    <div className="badge badge-secondary">{cart?.length || 0}</div>
+                </span>
+            </Link>
+        </li>
         {
             user
                 ?
                 <>
-                   <li> <img className='w-20' src={user?.photoURL} alt="" /> </li>
-                   <li> <button onClick={handleLogOut} className='btn btn-primary'>LogOut</button></li>
+                    <li> <img style={{ borderRadius: '50%' }} className='w-20' src={user?.photoURL} alt="" /> </li>
+                    <li> <button onClick={handleLogOut} className='btn btn-primary'>LogOut</button></li>
                 </>
                 :
                 <>
@@ -52,7 +65,7 @@ const Header = () => {
             <Helmet>
                 <title>Bestro Boss Restaurant | Order </title>
             </Helmet>
-            <div className="navbar-start">
+            <div className="navbar-start w-1/2 md:w-1/4">
                 <div className="dropdown">
                     <label tabIndex={0} className="btn btn-ghost lg:hidden">
                         <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h8m-8 6h16" /></svg>
@@ -63,7 +76,7 @@ const Header = () => {
                 </div>
                 <Link to='/' className="p-2"><img className='w-44' src={logo} alt="" /></Link>
             </div>
-            <div className="navbar-end hidden lg:flex">
+            <div className="navbar-end w-1/2 md:w-3/4 hidden lg:flex">
                 <ul className="menu menu-horizontal items-center px-1">
                     {navInfo}
                 </ul>

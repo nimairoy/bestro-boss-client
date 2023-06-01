@@ -6,6 +6,12 @@ import Order from "../pages/Order/Order";
 import Login from "../pages/Login/Login";
 import SignUp from "../pages/SignUp/SignUp";
 import PrivateRoutes from "./PrivateRoutes";
+import Secret from "../pages/Secret/Secret";
+import Dashboard from "../layout/Dashboard";
+import MyCart from "../pages/Dashboard/MyCart/MyCart";
+import AllUsers from "../pages/Dashboard/AllUsers/AllUsers";
+import AddItem from "../pages/Dashboard/AddItem/AddItem";
+import AdminRoutes from "./AdminRoutes";
 
 export const router = createBrowserRouter([
   {
@@ -22,7 +28,7 @@ export const router = createBrowserRouter([
       },
       {
         path: '/order/:category',
-        element: <PrivateRoutes><Order></Order></PrivateRoutes>
+        element: <Order></Order>
       },
       {
         path: '/login',
@@ -31,7 +37,29 @@ export const router = createBrowserRouter([
       {
         path: '/signup',
         element: <SignUp></SignUp>
+      },
+      {
+        path: '/secret',
+        element: <PrivateRoutes><Secret></Secret></PrivateRoutes>
       }
     ]
   },
+  {
+    path: '/dashboard',
+    element: <PrivateRoutes><Dashboard></Dashboard></PrivateRoutes>,
+    children: [
+      {
+        path: 'mycart',
+        element: <MyCart></MyCart>
+      },
+      {
+        path: 'allusers',
+        element: <AllUsers></AllUsers>
+      },
+      {
+        path: 'additem',
+        element: <AdminRoutes><AddItem></AddItem></AdminRoutes>
+      }
+    ]
+  }
 ]);
