@@ -14,7 +14,7 @@ const Order = () => {
     const { category } = useParams();
     const initialIndex = categories.indexOf(category);
     const [tabIndex, setTabIndex] = useState(initialIndex);
-    const [offereds, desserts, pizzas, soups, salads, drink] = useFood();
+    const [offereds, desserts, pizzas, soups, salads, drink, deshi] = useFood();
     console.log(category)
 
     return (
@@ -24,7 +24,7 @@ const Order = () => {
                 heading='Order Food'
                 subHeading='Would you like to try a dish?'
             ></Cover>
-            <div className="py-16">
+            <div className="py-12">
                 <Tabs selectedIndex={tabIndex} onSelect={(index) => setTabIndex(index)}>
                     <TabList>
                         <Tab>Salad</Tab>
@@ -32,6 +32,7 @@ const Order = () => {
                         <Tab>Soup</Tab>
                         <Tab>Dessert</Tab>
                         <Tab>Drinks</Tab>
+                        <Tab>Deshi</Tab>
                     </TabList>
                     <TabPanel>
                         <OrderTabPanel
@@ -56,6 +57,11 @@ const Order = () => {
                     <TabPanel>
                         <OrderTabPanel
                             items={drink}
+                        ></OrderTabPanel>
+                    </TabPanel>
+                    <TabPanel>
+                        <OrderTabPanel
+                            items={deshi}
                         ></OrderTabPanel>
                     </TabPanel>
                 </Tabs>

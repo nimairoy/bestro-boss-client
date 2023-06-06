@@ -1,11 +1,14 @@
 import React from 'react';
 import SectionTitle from '../../../components/SectionTitle/SectionTitle';
 import { useForm } from 'react-hook-form';
+import useAxiosSecure from '../../../hooks/useAxiosSecure';
+import Swal from 'sweetalert2';
 
 const img_hosting_token = import.meta.env.VITE_IMAGE_UPLOAD_KEY;
 
 const AddItem = () => {
-    const { register, formState: { errors }, handleSubmit } = useForm();
+    const [axiosSecure] = useAxiosSecure();
+    const { register,reset, formState: { errors }, handleSubmit } = useForm();
     const img_hosting_url = `https://api.imgbb.com/1/upload?key=${img_hosting_token}`;
 
     const onSubmit = data => {
@@ -18,12 +21,25 @@ const AddItem = () => {
         })
             .then(res => res.json())
             .then(imageResponse => {
-                if(imageResponse.success){
+                if (imageResponse.success) {
                     const imgURL = imageResponse.data.display_url;
-                    const {name, price, category, image} = data;
-                    const newItem = {name, price: parseFloat(price), category, image}
+                    const { name, price, category, image, recipe } = data;
+                    const newItem = { name, price: parseFloat(price), category, image, recipe }
                     newItem.image = imgURL
-                    console.log( newItem)
+                    console.log(newItem)
+                    axiosSecure.post('/menu', newItem)
+                        .then(data => {
+                            if (data.data.insertedId) {
+                                reset()
+                                Swal.fire({
+                                    position: 'top-end',
+                                    icon: 'success',
+                                    title: 'New item inserted Successfull',
+                                    showConfirmButton: false,
+                                    timer: 1500
+                                })
+                            }
+                        })
                 }
             })
     };
@@ -50,6 +66,7 @@ const AddItem = () => {
                                 <option value="pizza">Pizza</option>
                                 <option value="salad">Salad</option>
                                 <option value="soup">Soup</option>
+                                <option value="deshi">Deshi</option>
                                 <option value="drink">Drink</option>
                                 <option value="dessert">Dessert</option>
                             </select>

@@ -40,7 +40,7 @@ const Dashboard = () => {
                             <>
                                 <li><NavLink to='/dashboard/home'><AiFillHome></AiFillHome> User Home</NavLink></li>
                                 <li><NavLink to='/dashboard/reservations'><AiFillCalendar></AiFillCalendar> Reservations</NavLink></li>
-                                <li><NavLink to='/dashboard/payment'><AiOutlineWallet></AiOutlineWallet> Payment History</NavLink></li>
+                                <li><NavLink to='/dashboard/paymenthistory'><AiOutlineWallet></AiOutlineWallet> Payment History</NavLink></li>
                                 <li><NavLink to='/dashboard/mycart'><AiOutlineShoppingCart></AiOutlineShoppingCart> My Cart <span className="badge badge-secondary">{cart?.length || 0}</span></NavLink></li>
                             </>
                     }
